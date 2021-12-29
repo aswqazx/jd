@@ -160,9 +160,11 @@ async function cfd() {
     await $.wait(2000)
     await getTakeAggrPage('wxsign')
 
-    //使用道具
-    await $.wait(2000)
-    await GetPropCardCenterInfo()
+    if (new Date().getHours() < 22){
+      //使用道具
+      await $.wait(2000)
+      await GetPropCardCenterInfo()
+    }
 
     //助力奖励
     await $.wait(2000)
