@@ -16,6 +16,12 @@ exchangeFlag = $.isNode() ? (process.env.JD_CITY_EXCHANGE ? process.env.JD_CITY_
 // 优先助力[助力池]
 let helpShareFlag = "true";//是否优先助力[助力池]，默认是
 helpShareFlag = $.isNode() ? (process.env.JD_CITY_HELPSHARE ? process.env.JD_CITY_HELPSHARE : `${helpShareFlag}`) : ($.getdata('JD_CITY_HELPSHARE') ? $.getdata('JD_CITY_HELPSHARE') : `${helpShareFlag}`);
+let outuserID = "8";//屏蔽账号 2,5,7
+let outuserIdArr = [];
+outuserID = $.isNode() ? (process.env.JD_CITY_OUTUSERID ? process.env.JD_CITY_OUTUSERID : `${outuserID}`) : ($.getdata('JD_CITY_OUTUSERID') ? $.getdata('JD_CITY_OUTUSERID') : `${outuserID}`);
+for(let i of outuserID && outuserID.split(',')){
+  if(i) outuserIdArr.push(Number(i) || 0)
+}
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
@@ -37,7 +43,6 @@ let inviteCodes = [
   '2oqYLcNlPB0pJRDFQtiJu-3Ofb3aoQ@'+
   '-ryUX_4Pb2RFNkaWSt7M9lepp1Cs2CSN@'+
   '-ryUXvlfYWJHNRCXH4qRo-PU6chju5hJ@'+
-  '5rG5EP1dJD0dMl6ISpeJ5iZ_@'+
   '_LGlEfVdODMeNkvCTJeJ92Ic6iX_@'+
   '-ryULOtOPiYgG3O3GJmcu_y_TwrEEwI'
 ]
@@ -65,6 +70,7 @@ $.shareCodesArr = [];
       cookie = cookiesArr[i];
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
+      if(outuserIdArr.includes($.index)) continue
       await getUA()
       await getInviteId();
     }
