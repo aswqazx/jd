@@ -26,9 +26,9 @@ cron "15 0-23/2 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/mast
 */
 
 const $ = new Env('宠汪汪');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 let allMessage = '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
@@ -57,7 +57,7 @@ if(process.env.JOY_HOST){
 
 const weAppUrl = 'https://jdjoy.jd.com//pet';
 // const validator = require('./JDJRValidator.js');
-const validator = require('./jd_sign_validate_pure.js');
+const validator = require('../jd_sign_validate_pure.js');
 $.get=validator.injectToRequest($.get.bind($))
 $.post=validator.injectToRequest($.post.bind($))
 !(async () => {

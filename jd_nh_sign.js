@@ -50,6 +50,7 @@ async function main() {
     console.log(`获取详情失败`);
     return ;
   }
+  console.info(mainInfo)
   let assignmentList = mainInfo.assignmentList;
   for (let i = 0; i < assignmentList.length; i++) {
     let oneInfo = assignmentList[i];

@@ -87,26 +87,34 @@ async function run() {
                 continue;
             }
             if (vo.taskName == '每日签到') {
-                console.log(`开始做${vo.taskName}:${vo.taskItem.itemName}`);
-                await doTask(vo.taskType, vo.taskItem.itemId, vo.id);
-                await getReward(vo.taskType, vo.taskItem.itemId, vo.id);
+                console.log(`开始做${vo.taskName}:${vo.taskItem?.itemName}`);
+                for (let task of vo.taskItemList) {
+                    await doTask(vo.taskType, task.itemId, vo.id);
+                    await getReward(vo.taskType, task.itemId, vo.id);
+                }
             }
             if (vo.taskType == 3) {
                 console.log(`开始做${vo.taskName}:${vo.taskItem.itemName}`);
-                await getinfo2(vo.taskItem.itemLink);
-                await $.wait(1000 * vo.viewTime)
-                await doTask(vo.taskType, vo.taskItem.itemId, vo.id);
-                await getReward(vo.taskType, vo.taskItem.itemId, vo.id);
+                for (let task of vo.taskItemList) {
+                    await getinfo2(vo.task.itemLink);
+                    await $.wait(1000 * vo.viewTime)
+                    await doTask(vo.taskType, task.itemId, vo.id);
+                    await getReward(vo.taskType, task.itemId, vo.id);
+                }
             }
             if (vo.taskType == 4) {
                 console.log(`开始做${vo.taskName}:${vo.taskItem.itemName}`);
-                await doTask(vo.taskType, vo.taskItem.itemId, vo.id);
-                await getReward(vo.taskType, vo.taskItem.itemId, vo.id);
+                for (let task of vo.taskItemList) {
+                    await doTask(vo.taskType, task.itemId, vo.id);
+                    await getReward(vo.taskType, task.itemId, vo.id);
+                }
             }
             if (vo.taskType == 2) {
                 console.log(`开始做${vo.taskName}:${vo.taskItem.itemName}`);
-                await doTask(vo.taskType, vo.taskItem.itemId, vo.id);
-                await getReward(vo.taskType, vo.taskItem.itemId, vo.id);
+                for (let task of vo.taskItemList) {
+                    await doTask(vo.taskType, task.itemId, vo.id);
+                    await getReward(vo.taskType, task.itemId, vo.id);
+                }
             }
             $.hasFinish = false;
         }
