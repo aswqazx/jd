@@ -1,2 +1,2 @@
 # jd
-jd script test
+jd script
