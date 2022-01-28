@@ -4,8 +4,8 @@
 cron 23 7 * * * https://raw.githubusercontent.com/LingFeng0918/jd_scripts/master/jd_nh_sign.js
 * * */
 const $ = new Env('年货节签到');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 let message = '';
 let cookiesArr = []
 if ($.isNode()) {
