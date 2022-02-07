@@ -41,7 +41,7 @@ if ($.isNode()) {
   }
   console.log('女装盲盒\n' +
       '活动时间：2021-1-1至2021-1-31\n' +
-      '活动地址：https://anmp.jd.com/babelDiy/Zeus/293owQqRtKfS8cuUhk4YzGFYGw2W/index.html');
+      '活动地址：https://anmp.jd.com/babelDiy/Zeus/3ZHWXfEDpu5GyX1BgCEN3qQwrC4K/index.html');
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -61,7 +61,7 @@ if ($.isNode()) {
         continue
       }
       try {
-        await jdMh('https://anmp.jd.com/babelDiy/Zeus/293owQqRtKfS8cuUhk4YzGFYGw2W/index.html')
+        await jdMh('https://anmp.jd.com/babelDiy/Zeus/3ZHWXfEDpu5GyX1BgCEN3qQwrC4K/index.html')
       } catch (e) {
         $.logErr(e)
       }

@@ -3,7 +3,7 @@
 cron 0 0,10,20 * * * jd_mhyyl.js
 * */
 const $ = new Env('萌虎摇摇乐');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 let cookiesArr = [];
 let allInvite = [];
 if ($.isNode()) {

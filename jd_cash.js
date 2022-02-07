@@ -8,17 +8,17 @@
 ============Quantumultx===============
 [task_local]
 #签到领现金
-2 0-23/4 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_cash.js, tag=签到领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+2 0-23/4 * * * jd_cash.js, tag=签到领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "2 0-23/4 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_cash.js,tag=签到领现金
+cron "2 0-23/4 * * *" script-path=jd_cash.js,tag=签到领现金
 
 ===============Surge=================
-签到领现金 = type=cron,cronexp="2 0-23/4 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_cash.js
+签到领现金 = type=cron,cronexp="2 0-23/4 * * *",wake-system=1,timeout=3600,script-path=jd_cash.js
 
 ============小火箭=========
-签到领现金 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_cash.js, cronexpr="2 0-23/4 * * *", timeout=3600, enable=true
+签到领现金 = type=cron,script-path=jd_cash.js, cronexpr="2 0-23/4 * * *", timeout=3600, enable=true
  */
 const $ = new Env('签到领现金');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -58,8 +58,12 @@ let allMessage = '';
     return;
   }
   await requireConfig()
-  //await getAuthorShareCode();
-  //await getAuthorShareCode2();
+  // $.authorCode = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_updateCash.json')
+  // if (!$.authorCode) {
+  //   $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+  //   await $.wait(1000)
+  //   $.authorCode = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateCash.json') || []
+  // }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -100,8 +104,8 @@ async function jdCash() {
 
   await shareCodesFormat()
   // await helpFriends()
-  await getReward()
-  await getReward('2');
+  // await getReward()
+  // await getReward('2');
   $.exchangeBeanNum = 0;
   cash_exchange = $.isNode() ? (process.env.CASH_EXCHANGE ? process.env.CASH_EXCHANGE : `${cash_exchange}`) : ($.getdata('cash_exchange') ? $.getdata('cash_exchange') : `${cash_exchange}`);
   // if (cash_exchange === 'true') {
@@ -132,12 +136,10 @@ async function jdCash() {
 
 async function appindex(info=false) {
   let functionId = "cash_homePage"
-  let body = "%7B%7D"
-  let uuid = randomString(16)
-  let sign = await getSign(functionId, decodeURIComponent(body), uuid)
-  let url = `${JD_API_HOST}?functionId=${functionId}&build=167774&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
+  let body = {}
+  let sign = await getSign(functionId, body)
   return new Promise((resolve) => {
-    $.post(apptaskUrl(url, body), async (err, resp, data) => {
+    $.post(apptaskUrl(functionId, sign), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -300,12 +302,10 @@ function helpFriend(helpInfo) {
 
 async function appdoTask(type,taskInfo) {
   let functionId = 'cash_doTask'
-  let body = escape(JSON.stringify({"type":type,"taskInfo":taskInfo}))
-  let uuid = randomString(16)
-  let sign = await getSign(functionId, decodeURIComponent(body), uuid)
-  let url = `${JD_API_HOST}?functionId=${functionId}&build=167774&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
+  let body = {"type":type,"taskInfo":taskInfo}
+  let sign = await getSign(functionId, body)
   return new Promise((resolve) => {
-    $.post(apptaskUrl(url, body), (err, resp, data) => {
+    $.post(apptaskUrl(functionId, sign), (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -313,11 +313,11 @@ async function appdoTask(type,taskInfo) {
         } else {
           if (safeGet(data)) {
             data = JSON.parse(data);
-            if( data.code === 0){
+            if(data.code === 0) {
               console.log(`任务完成成功`)
               // console.log(data.data.result.taskInfos)
-            }else{
-              console.log(data)
+            } else {
+              console.log(JSON.stringify(data))
             }
           }
         }
@@ -441,29 +441,29 @@ function exchange2(node) {
     })
   })
 }
-function getSign(functionid, body, uuid) {
+function getSign(functionId, body) {
   return new Promise(async resolve => {
     let data = {
-      "functionId":functionid,
-      "body":body,
-      "uuid":uuid,
+      functionId,
+      body: JSON.stringify(body),
       "client":"apple",
-      "clientVersion":"10.1.0"
+      "clientVersion":"10.3.0"
     }
     let HostArr = ['jdsign.cf', 'signer.nz.lu']
     let Host = HostArr[Math.floor((Math.random() * HostArr.length))]
     let options = {
-      url: `https://cdn.jdsign.cf/ddo`,
+      url: `https://cdn.nz.lu/ddo`,
       body: JSON.stringify(data),
       headers: {
         Host,
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }
+      },
+      timeout: 30 * 1000
     }
     $.post(options, (err, resp, data) => {
       try {
         if (err) {
-          console.log(`${JSON.stringify(err)}`)
+          console.log(JSON.stringify(err))
           console.log(`${$.name} getSign API请求失败，请检查网路重试`)
         } else {
 
@@ -496,7 +496,7 @@ function showMsg() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `https://code.chiang.fun/api/v1/jd/jdcash/read/${randomCount}/`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `http://code.chiang.fun/api/v1/jd/jdcash/read/${randomCount}/`, 'timeout': 30000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -513,7 +513,7 @@ function readShareCode() {
         resolve(data);
       }
     })
-    await $.wait(10000);
+    await $.wait(30000);
     resolve()
   })
 }
@@ -567,7 +567,7 @@ function requireConfig() {
       })
     } else {
       if ($.getdata('jd_cash_invite')) $.shareCodesArr = $.getdata('jd_cash_invite').split('\n').filter(item => !!item);
-      console.log(`\nBoxJs设置的京喜财富岛邀请码:${$.getdata('jd_cash_invite')}\n`);
+      console.log(`\nBoxJs设置的京东签到领现金邀请码:${$.getdata('jd_cash_invite')}\n`);
     }
     console.log(`您提供了${$.shareCodesArr.length}个账号的${$.name}助力码\n`);
     resolve()
@@ -591,10 +591,10 @@ function deepCopy(obj) {
   return objClone;
 }
 
-function apptaskUrl(url, body) {
+function apptaskUrl(functionId = "", body = "") {
   return {
-    url,
-    body: `body=${body}`,
+    url: `${JD_API_HOST}?functionId=${functionId}`,
+    body,
     headers: {
       'Cookie': cookie,
       'Host': 'api.m.jd.com',
@@ -609,7 +609,7 @@ function apptaskUrl(url, body) {
 }
 function taskUrl(functionId, body = {}) {
   return {
-    url: `${JD_API_HOST}?functionId=${functionId}&body=${escape(JSON.stringify(body))}&appid=CashRewardMiniH5Env&appid=9.1.0`,
+    url: `${JD_API_HOST}?functionId=${functionId}&body=${encodeURIComponent(JSON.stringify(body))}&appid=CashRewardMiniH5Env&appid=9.1.0`,
     headers: {
       'Cookie': cookie,
       'Host': 'api.m.jd.com',
@@ -623,43 +623,35 @@ function taskUrl(functionId, body = {}) {
   }
 }
 
-function getAuthorShareCode(url = "http://cdn.annnibb.me/jd_cash.json") {
+function getAuthorShareCode(url) {
   return new Promise(resolve => {
-    $.get({url, headers:{
+    const options = {
+      url: `${url}?${new Date()}`, "timeout": 30000, headers: {
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }, timeout: 200000,}, async (err, resp, data) => {
-      $.authorCode = [];
-      try {
-        if (err) {
-        } else {
-          $.authorCode = JSON.parse(data)
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve();
       }
-    })
-  })
-}
-function getAuthorShareCode2(url = "https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jd_updateCash.json") {
-  return new Promise(resolve => {
-    $.get({url, headers:{
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }, timeout: 200000,}, async (err, resp, data) => {
-      $.authorCode2 = [];
+    };
+    if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
+      const tunnel = require("tunnel");
+      const agent = {
+        https: tunnel.httpsOverHttp({
+          proxy: {
+            host: process.env.TG_PROXY_HOST,
+            port: process.env.TG_PROXY_PORT * 1
+          }
+        })
+      }
+      Object.assign(options, { agent })
+    }
+    $.get(options, async (err, resp, data) => {
       try {
         if (err) {
         } else {
-          $.authorCode2 = JSON.parse(data)
-          if ($.authorCode2 && $.authorCode2.length) {
-            $.authorCode.push(...$.authorCode2);
-          }
+          if (data) data = JSON.parse(data)
         }
       } catch (e) {
-        $.logErr(e, resp)
+        // $.logErr(e, resp)
       } finally {
-        resolve();
+        resolve(data);
       }
     })
   })
