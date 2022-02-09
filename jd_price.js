@@ -88,6 +88,8 @@ let h5st = ''
         await $.wait(2000)
         await jstoken();
       }
+
+      await $.wait(20000);  //增加延迟，减少频繁异常
     }
   }
   if (allMessage) {
