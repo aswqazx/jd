@@ -41,6 +41,16 @@ let UA, UAInfo = {};
 let nowTimes;
 const randomCount = $.isNode() ? 20 : 3;
 $.appId = "92a36";
+function oc(fn, defaultVal) {//optioanl chaining
+  try {
+    return fn()
+  } catch (e) {
+    return undefined
+  }
+}
+function nc(val1, val2) {//nullish coalescing
+  return val1 != undefined ? val1 : val2
+}
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -81,7 +91,7 @@ if ($.isNode()) {
       $.info = {}
       token = await getJxToken()
       await cfd();
-      await $.wait(2000);
+      await $.wait(3000);
     }
   }
   /*let res = await getAuthorShareCode('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/cfd.json')
@@ -103,7 +113,7 @@ if ($.isNode()) {
         console.log(`账号${$.UserName} 去助力 ${$.newShareCodes[j]}`)
         $.delcode = false
         await helpByStage($.newShareCodes[j])
-        await $.wait(2000)
+        await $.wait(3000)
         if ($.delcode) {
           $.newShareCodes.splice(j, 1)
           j--
@@ -126,7 +136,7 @@ async function cfd() {
     if (beginInfo.LeadInfo.dwLeadType === 2) {
       console.log(`还未开通活动，尝试初始化`)
       await noviceTask()
-      await $.wait(2000)
+      await $.wait(3000)
       beginInfo = await getUserInfo(false);
       if (beginInfo.LeadInfo.dwLeadType !== 2) {
         console.log(`初始化成功\n`)
@@ -144,7 +154,7 @@ async function cfd() {
       $.break = false
       for (let key of Object.keys(XBDetail)) {
         let vo = XBDetail[key]
-        await $.wait(2000)
+        await $.wait(4000)
         await TreasureHunt(vo.strIndex)
         if ($.break) break
       }
@@ -153,41 +163,41 @@ async function cfd() {
     }
 
     //每日签到
-    await $.wait(2000)
+    await $.wait(3000)
     await getTakeAggrPage('sign')
 
     //小程序每日签到
-    await $.wait(2000)
+    await $.wait(3000)
     await getTakeAggrPage('wxsign')
 
     if (new Date().getHours() < 22){
       //使用道具
-      await $.wait(2000)
+      await $.wait(3000)
       await GetPropCardCenterInfo()
     }
 
     //助力奖励
-    await $.wait(2000)
+    await $.wait(3000)
     await getTakeAggrPage('helpdraw')
 
     console.log('')
     //卖贝壳
-    // await $.wait(2000)
+    // await $.wait(3000)
     // await querystorageroom('1')
 
     //升级建筑
-    await $.wait(2000)
+    await $.wait(3000)
     for(let key of Object.keys($.info.buildInfo.buildList)) {
       let vo = $.info.buildInfo.buildList[key]
-      let body = `strBuildIndex=${vo.strBuildIndex}`
+      let body = `strBuildIndex=${vo.strBuildIndex}&dwType=1`
       await getBuildInfo(body, vo)
-      await $.wait(2000)
+      await $.wait(3000)
     }
 
     //接待贵宾
     console.log(`接待贵宾`)
     if ($.info.StoryInfo.StoryList) {
-      await $.wait(2000)
+      await $.wait(3000)
       for (let key of Object.keys($.info.StoryInfo.StoryList)) {
         let vo = $.info.StoryInfo.StoryList[key]
         if (vo.Special) {
@@ -195,7 +205,7 @@ async function cfd() {
           await specialUserOper(vo.strStoryId, '2', vo.ddwTriggerDay, vo)
           await $.wait(vo.Special.dwWaitTime * 1000)
           await specialUserOper(vo.strStoryId, '3', vo.ddwTriggerDay, vo)
-          await $.wait(2000)
+          await $.wait(3000)
         } else {
           console.log(`当前暂无贵宾\n`)
         }
@@ -207,15 +217,15 @@ async function cfd() {
     //收藏家
     console.log(`收藏家`)
     if ($.info.StoryInfo.StoryList) {
-      await $.wait(2000)
+      await $.wait(3000)
       for (let key of Object.keys($.info.StoryInfo.StoryList)) {
         let vo = $.info.StoryInfo.StoryList[key]
         if (vo.Collector) {
           console.log(`喜欢贝壳的收藏家来了，快去卖贝壳吧~`)
           await collectorOper(vo.strStoryId, '2', vo.ddwTriggerDay)
-          await $.wait(2000)
+          await $.wait(3000)
           await querystorageroom('2')
-          await $.wait(2000)
+          await $.wait(3000)
           await collectorOper(vo.strStoryId, '4', vo.ddwTriggerDay)
         } else {
           console.log(`当前暂无收藏家\n`)
@@ -228,7 +238,7 @@ async function cfd() {
     //美人鱼
     console.log(`美人鱼`)
     if ($.info.StoryInfo.StoryList) {
-      await $.wait(2000)
+      await $.wait(3000)
       for (let key of Object.keys($.info.StoryInfo.StoryList)) {
         let vo = $.info.StoryInfo.StoryList[key]
         if (vo.Mermaid) {
@@ -247,31 +257,31 @@ async function cfd() {
     }
 
     //倒垃圾
-    await $.wait(2000)
+    await $.wait(3000)
     await queryRubbishInfo()
 
     console.log(`\n做任务`)
     //牛牛任务
-    await $.wait(2000)
+    await $.wait(3000)
     await getActTask()
 
     //日常任务
-    await $.wait(2000);
+    await $.wait(3000);
     await getTaskList(0);
-    await $.wait(2000);
+    await $.wait(3000);
     await browserTask(0);
 
     //成就任务
-    await $.wait(2000);
+    await $.wait(3000);
     await getTaskList(1);
-    await $.wait(2000);
+    await $.wait(3000);
     await browserTask(1);
 
     //卡片任务
-    await $.wait(2000);
+    await $.wait(3000);
     await getPropTask();
 
-    await $.wait(2000);
+    await $.wait(3000);
     const endInfo = await getUserInfo(false);
     $.result.push(
         `【京东账号${$.index}】${$.nickName || $.UserName}`,
@@ -458,7 +468,7 @@ async function mermaidOper(strStoryId, dwType, ddwTriggerDay) {
                 console.log(`开始解救美人鱼`)
                 dwType = '3'
                 await mermaidOper(strStoryId, dwType, ddwTriggerDay)
-                await $.wait(2000)
+                await $.wait(3000)
               } else {
                 console.log(`开始解救美人鱼失败：${data.sErrMsg}\n`)
               }
@@ -520,7 +530,7 @@ async function querystorageroom(dwSceneId) {
                 strTypeCnt += `${bags[j]}|`
               }
             }
-            await $.wait(2000)
+            await $.wait(3000)
             await sellgoods(`strTypeCnt=${strTypeCnt}&dwSceneId=${dwSceneId}`)
           } else {
             console.log(`背包是空的，快去捡贝壳吧\n`)
@@ -577,7 +587,7 @@ async function getTakeAggrPage(type) {
                   if (vo.dwStatus !== 1) {
                     const body = `ddwCoin=${vo.ddwCoin}&ddwMoney=${vo.ddwMoney}&dwPrizeType=${vo.dwPrizeType}&strPrizePool=${vo.strPrizePool}&dwPrizeLv=${vo.dwBingoLevel}&strPgUUNum=${token['farm_jstoken']}&strPgtimestamp=${token['timestamp']}&strPhoneID=${token['phoneid']}`
                     await rewardSign(body)
-                    await $.wait(2000)
+                    await $.wait(3000)
                   } else {
                     console.log(`今日已签到\n`)
                     break
@@ -607,7 +617,7 @@ async function getTakeAggrPage(type) {
                   if (vo.dwStatus !== 1) {
                     const body = `ddwCoin=${vo.ddwCoin}&ddwMoney=${vo.ddwMoney}&dwPrizeType=${vo.dwPrizeType}&strPrizePool=${vo.strPrizePool}&dwPrizeLv=${vo.dwBingoLevel}&strPgUUNum=${token['farm_jstoken']}&strPgtimestamp=${token['timestamp']}&strPhoneID=${token['phoneid']}`
                     await rewardSign(body, 6)
-                    await $.wait(2000)
+                    await $.wait(3000)
                   } else {
                     console.log(`今日已签到\n`)
                     break
@@ -641,7 +651,7 @@ async function getTakeAggrPage(type) {
               if (helpNum.length !== 0) {
                 for (let j = 0; j < helpNum.length; j++) {
                   await helpdraw(helpNum[j])
-                  await $.wait(2000)
+                  await $.wait(3000)
                 }
               } else {
                 console.log(`暂无可领助力奖励`)
@@ -733,13 +743,13 @@ async function queryRubbishInfo() {
             for (let key of Object.keys(data.Data.StoryInfo.StoryList)) {
               let vo = data.Data.StoryInfo.StoryList[key]
               if (vo.Rubbish) {
-                await $.wait(2000)
+                await $.wait(3000)
                 let rubbishOperRes = await rubbishOper('1')
                 if (Object.keys(rubbishOperRes.Data.ThrowRubbish.Game).length) {
                   console.log(`获取垃圾信息成功：本次需要垃圾分类`)
                   for (let key of Object.keys(rubbishOperRes.Data.ThrowRubbish.Game.RubbishList)) {
                     let vo = rubbishOperRes.Data.ThrowRubbish.Game.RubbishList[key]
-                    await $.wait(2000)
+                    await $.wait(3000)
                     var rubbishOperTwoRes = await rubbishOper('2', `dwRubbishId=${vo.dwId}`)
                   }
                   if (rubbishOperTwoRes.iRet === 0) {
@@ -827,11 +837,12 @@ async function getActTask(type = true) {
             for (let key of Object.keys(data.Data.TaskList)) {
               let vo = data.Data.TaskList[key]
               if ([0, 1, 2].includes(vo.dwOrderId) && (vo.dwCompleteNum !== vo.dwTargetNum) && vo.dwTargetNum < 10) {
+                if (vo.strTaskName === "升级1个建筑") continue
                 console.log(`开始【🐮牛牛任务】${vo.strTaskName}`)
                 for (let i = vo.dwCompleteNum; i < vo.dwTargetNum; i++) {
                   console.log(`【🐮牛牛任务】${vo.strTaskName} 进度：${i + 1}/${vo.dwTargetNum}`)
                   await doTask(vo.ddwTaskId, 2)
-                  await $.wait(2000)
+                  await $.wait(3000)
                 }
               }
             }
@@ -840,7 +851,7 @@ async function getActTask(type = true) {
               let vo = data.Data.TaskList[key]
               if ((vo.dwCompleteNum >= vo.dwTargetNum) && vo.dwAwardStatus !== 1) {
                 await awardActTask('Award', vo)
-                await $.wait(2000)
+                await $.wait(3000)
               }
             }
             data = await getActTask(false)
@@ -848,7 +859,7 @@ async function getActTask(type = true) {
               if (data.Data.dwStatus !== 4) {
                 console.log(`【🐮牛牛任务】已做完，去开启宝箱`)
                 await awardActTask('story/ActTaskAward')
-                await $.wait(2000)
+                await $.wait(3000)
               } else {
                 console.log(`【🐮牛牛任务】已做完，宝箱已开启`)
               }
@@ -955,9 +966,9 @@ async function getBuildInfo(body, buildList, type = true) {
               console.log(`创建建筑`)
               console.log(`【${buildNmae}】当前建筑还未创建，开始创建`)
               await createbuilding(`strBuildIndex=${data.strBuildIndex}`, buildNmae)
-              await $.wait(2000)
+              await $.wait(3000)
               data = await getBuildInfo(twobody, buildList, false)
-              await $.wait(2000)
+              await $.wait(3000)
             }
             console.log(`收金币`)
             const body = `strBuildIndex=${data.strBuildIndex}&dwType=1`
@@ -970,8 +981,8 @@ async function getBuildInfo(body, buildList, type = true) {
             console.log(`【${buildNmae}】升级需要${data.ddwNextLvlCostCoin}金币，保留升级需要的3倍${data.ddwNextLvlCostCoin * 3}金币，当前拥有${$.info.ddwCoinBalance}金币`)
             if(data.dwCanLvlUp > 0 && $.info.ddwCoinBalance >= (data.ddwNextLvlCostCoin * 3)) {
               console.log(`【${buildNmae}】满足升级条件，开始升级`)
-              const body = `ddwCostCoin=${data.ddwNextLvlCostCoin}&strBuildIndex=${data.strBuildIndex}`
-              await $.wait(2000)
+              const body = `strBuildIndex=${data.strBuildIndex}&ddwCostCoin=${data.ddwNextLvlCostCoin}`
+              await $.wait(3000)
               let buildLvlUpRes = await buildLvlUp(body)
               if (buildLvlUpRes.iRet === 0) {
                 console.log(`【${buildNmae}】升级成功：获得${data.ddwLvlRich}财富\n`)
@@ -1123,14 +1134,14 @@ function getAuthorShareCode(url) {
 // 获取用户信息
 function getUserInfo(showInvite = true) {
   return new Promise(async (resolve) => {
-    $.get(taskUrl(`user/QueryUserInfo`, `ddwTaskId=&strShareId=&strMarkList=${encodeURIComponent('guider_step,collect_coin_auth,guider_medal,guider_over_flag,build_food_full,build_sea_full,build_shop_full,build_fun_full,medal_guider_show,guide_guider_show,guide_receive_vistor,daily_task,guider_daily_task')}&strPgUUNum=${token['farm_jstoken']}&strPgtimestamp=${token['timestamp']}&strPhoneID=${token['phoneid']}`), async (err, resp, data) => {
+    $.get(taskUrl(`user/QueryUserInfo`, `ddwTaskId=&strShareId=&strMarkList=${encodeURIComponent('guider_step,collect_coin_auth,guider_medal,guider_over_flag,build_food_full,build_sea_full,build_shop_full,build_fun_full,medal_guider_show,guide_guider_show,guide_receive_vistor,daily_task,guider_daily_task,cfd_has_show_selef_point,choose_goods_has_show,daily_task_win,new_user_task_win,guider_new_user_task,guider_daily_task_icon,guider_nn_task_icon,tool_layer,new_ask_friend_m')}&strPgtimestamp=${token['timestamp']}&strPhoneID=${token['phoneid']}&strPgUUNum=${token['farm_jstoken']}&strVersion=1.0.1&dwIsReJoin=1`), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} QueryUserInfo API请求失败，请检查网路重试`)
         } else {
           data = JSON.parse(data.replace(/\n/g, "").match(new RegExp(/jsonpCBK.?\((.*);*\)/))[1]);
-          $.showPp = data?.AreaAddr?.dwIsSHowPp ?? 0
+          $.showPp = nc(oc(() => data.AreaAddr.dwIsSHowPp), 0)
           const {
             buildInfo = {},
             ddwRichBalance,
@@ -1196,11 +1207,11 @@ function getPropTask() {
             let vo = data.Data.TaskList[key]
             if ((vo.dwCompleteNum < vo.dwTargetNum) && ![9, 11].includes(vo.dwPointType)) {
               await doTask(vo.ddwTaskId, 3)
-              await $.wait(2000)
+              await $.wait(3000)
             } else {
               if ((vo.dwCompleteNum >= vo.dwTargetNum) && vo.dwAwardStatus !== 1) {
                 console.log(`【${vo.strTaskName}】已完成，去领取奖励`)
-                await $.wait(2000)
+                await $.wait(3000)
                 await awardTask(2, vo)
               }
             }
@@ -1275,14 +1286,14 @@ function browserTask(taskType) {
     switch (taskType) {
       case 0://日常任务
         for (let i = 0; i < $.allTask.length; i++) {
-          const start = $.allTask[i].completedTimes, end = $.allTask[i].targetTimes, bizCode = $.allTask[i]?.bizCode ?? "jxbfd"
+          const start = $.allTask[i].completedTimes, end = $.allTask[i].targetTimes, bizCode = nc(oc(() => $.allTask[i].bizCode), "jxbfd")
           const taskinfo = $.allTask[i];
           console.log(`开始第${i + 1}个【📆日常任务】${taskinfo.taskName}\n`);
           for (let i = start; i < end; i++) {
             //做任务
             console.log(`【📆日常任务】${taskinfo.taskName} 进度：${i + 1}/${end}`)
             await doTask(taskinfo.taskId, null, bizCode);
-            await $.wait(2000);
+            await $.wait(3000);
           }
           //领取奖励
           await awardTask(0, taskinfo, bizCode);
@@ -1297,7 +1308,7 @@ function browserTask(taskType) {
           } else {
             //领奖励
             await awardTask(1, taskinfo);
-            await $.wait(2000);
+            await $.wait(3000);
           }
         }
         break;
