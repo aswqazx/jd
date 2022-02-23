@@ -21,9 +21,9 @@ cron "20 * * * *" script-path=https://raw.githubusercontent.com/jiulan/platypus/
 汪汪乐园 = type=cron,script-path=https://raw.githubusercontent.com/jiulan/platypus/main/scripts/jd_joy_park.js, cronexpr="20 * * * *", timeout=3600, enable=true
  */
 const $ = new Env('汪汪乐园养joy');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 let hot_flag = false
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [],
     cookie = '';
@@ -43,7 +43,7 @@ $.log(`最大化收益模式: 已${$.JOY_COIN_MAXIMIZE ? `默认开启` : `关�
 const JD_API_HOST = `https://api.m.jd.com/client.action`;
 message = ""
 !(async () => {
-    $.user_agent = require('./USER_AGENTS').USER_AGENT
+    $.user_agent = require('../USER_AGENTS').USER_AGENT
     if (!cookiesArr[0]) {
         $.msg($.name, '【提示】请先获取cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/', {
             "open-url": "https://bean.m.jd.com/"

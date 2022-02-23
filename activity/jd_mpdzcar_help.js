@@ -9,8 +9,8 @@ TG https://t.me/duckjobs
 10 3 * * * jd_mpdzcar_help.js
 */
 const $ = new Env('头文字J 助力');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
 let ownCode = null;
 if ($.isNode()) {

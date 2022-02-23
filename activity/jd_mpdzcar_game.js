@@ -9,8 +9,8 @@ TG https://t.me/duckjobs
 10 6,10,12 * * * jd_mpdzcar_game.js
 */
 const $ = new Env('头文字J 游戏');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 let cookiesArr = [], cookie = '', message = '';
 if ($.isNode()) {
     Object.keys(jdCookieNode).forEach((item) => {
