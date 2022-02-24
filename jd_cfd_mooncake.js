@@ -136,6 +136,10 @@ async function cfd() {
       }
     }
 
+    if (!beginInfo.MarkList.daily_task_win) {
+      await setMark()
+    }
+
     //抽奖
     await $.wait(2000)
     await composePearlState(4)
@@ -466,6 +470,25 @@ function getAuthorShareCode(url) {
   })
 }
 
+function setMark() {
+  return new Promise(resolve => {
+    $.get(taskUrl("user/SetMark", `strMark=daily_task_win&strValue=1&dwType=1`), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`);
+          console.log(`${$.name} SetMark API请求失败，请检查网路重试`);
+        } else {
+          data = JSON.parse(data.replace(/\n/g, "").match(new RegExp(/jsonpCBK.?\((.*);*\)/))[1]);
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally{
+        resolve();
+      }
+    })
+  })
+}
+
 // 获取用户信息
 function getUserInfo(showInvite = true) {
   return new Promise(async (resolve) => {
@@ -484,6 +507,7 @@ function getUserInfo(showInvite = true) {
             dwLandLvl,
             LeadInfo = {},
             Business = {},
+            MarkList = {}
           } = data;
           if (showInvite) {
             console.log(`获取用户信息：${sErrMsg}\n${$.showLog ? data : ""}`);
@@ -501,12 +525,14 @@ function getUserInfo(showInvite = true) {
             strMyShareId,
             dwLandLvl,
             LeadInfo,
+            MarkList
           };
           resolve({
             ddwRichBalance,
             ddwCoinBalance,
             strMyShareId,
             LeadInfo,
+            MarkList
           });
         }
       } catch (e) {
