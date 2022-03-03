@@ -5,9 +5,9 @@
 27 0-23/4 * * * jd_jdtj_winner.js
 */
 const $ = new Env('京东特价--翻翻乐');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '', linkId = 'ouLEuSSoBzj9b9YYYIsiDA', fflLinkId = 'ouLEuSSoBzj9b9YYYIsiDA';
 const money = process.env.BIGWINNER_MONEY || 0.3
