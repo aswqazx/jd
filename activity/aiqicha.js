@@ -10,7 +10,7 @@
 */
 const $ = new Env("爱企查日常任务");
 const axios = require("axios");
-const notify = $.isNode() ? require("./sendNotify") : "";
+const notify = $.isNode() ? require("../sendNotify") : "";
 aqcookie = "BDUSS=dqMzhoUW5xMlJTWn5YS0FZd0VJMC1DTHdQaHIxb1A2MElhYVNhSklhNFB1ekZpRVFBQUFBJCQAAAAAAAAAAAEAAABa7GUfsLXK0s7extvU0s~CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8uCmIPLgpiaH;";
 aqcookieArr = [];
 
