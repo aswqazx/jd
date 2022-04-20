@@ -142,6 +142,7 @@ async function getActiveInfo(url = 'https://prodev.m.jd.com/mall/active/2y1S9xVY
                         activityId = data.activityInfo.activityId
                         for (let key of Object.keys(data.codeFloors)) {
                             let vo = data.codeFloors[key]
+                            //console.info(vo)
                             if (vo.boardParams && vo.boardParams.taskCode === "2CCbSBbVWkFZzRDngs4F6q3YZ62o") {
                                 agid = []
                                 agid.push(vo.materialParams.advIdVideo[0].advGrpId)
@@ -163,7 +164,7 @@ async function getActiveInfo(url = 'https://prodev.m.jd.com/mall/active/2y1S9xVY
                                 console.log(`去做【${vo.boardParams.titleText}】`)
                                 await getTaskInfo("9", vo.boardParams.projectCode, vo.boardParams.taskCode)
                                 await $.wait(2000)
-                            } else if (vo.boardParams && (vo.boardParams.taskCode === "3dw9N5yB18RaN9T1p5dKHLrWrsX" || vo.boardParams.taskCode === "CtXTxzkh4ExFCrGf8si3ePxGnPy" || vo.boardParams.taskCode === "Hys8nCmAaqKmv1G3Y3a5LJEk36Y" || vo.boardParams.taskCode === "2wPBGptSUXNs3fxqgAtrV5MwkYEa")) {
+                            } else if (vo.boardParams && (vo.boardParams.taskCode === "3dw9N5yB18RaN9T1p5dKHLrWrsX" || vo.boardParams.taskCode === "CtXTxzkh4ExFCrGf8si3ePxGnPy" || vo.boardParams.taskCode === "Hys8nCmAaqKmv1G3Y3a5LJEk36Y" || vo.boardParams.taskCode === "2wPBGptSUXNs3fxqgAtrV5MwkYEa"|| vo.boardParams.taskCode === "31MsESed1HY5c34gX2dnxD3C7YJF")) {
                                 await getTaskInfo("1", vo.boardParams.projectCode, vo.boardParams.taskCode)
                                 await $.wait(2000)
                             }
@@ -191,6 +192,7 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
                 } else {
                     if (data) {
                         data = JSON.parse(data)
+                        //console.info(data)
                         if (assignmentId === "2CCbSBbVWkFZzRDngs4F6q3YZ62o") {
                             if (data.code === "0" && data.data) {
                                 if (data.data[0]) {
@@ -248,7 +250,7 @@ async function getTaskInfo(type, projectId, assignmentId, helpType = '1', itemId
                             } else {
                                 console.log(data.message)
                             }
-                        } else if (assignmentId === "2PbAu1BAT79RxrM5V7c2VAPUQDSd" || assignmentId === "3dw9N5yB18RaN9T1p5dKHLrWrsX" || assignmentId === "2gWnJADG8JXMpp1WXiNHgSy4xUSv" || assignmentId === "CtXTxzkh4ExFCrGf8si3ePxGnPy" || assignmentId === "2wPBGptSUXNs3fxqgAtrV5MwkYEa" || assignmentId === "u4eyHS91t3fV6HRyBCg9k5NTUid" || assignmentId === "4WHSXEqKZeGQZeP9SvqxePQpBkpS" || assignmentId === "4PCdWdiKNwRw1PmLaFzJmTqRBq4v" || assignmentId === "4JcMwRmGJUXptBYzAfUDkKTtgeUs" || assignmentId === "4ZmB6jqmJjRWPWxjuq22Uf17CuUQ" || assignmentId === "QGPPJyQPhSBJ57QcU8PdMwWwwCR" || assignmentId === "tBLY4YL4LkBwWj9KKq9BevHHvcP" || assignmentId === "4UFHr2rSLyS912riDWih6B8gMXkf") {
+                        } else if (assignmentId === "2PbAu1BAT79RxrM5V7c2VAPUQDSd" || assignmentId === "3dw9N5yB18RaN9T1p5dKHLrWrsX" || assignmentId === "2gWnJADG8JXMpp1WXiNHgSy4xUSv" || assignmentId === "CtXTxzkh4ExFCrGf8si3ePxGnPy" || assignmentId === "2wPBGptSUXNs3fxqgAtrV5MwkYEa" || assignmentId === "u4eyHS91t3fV6HRyBCg9k5NTUid" || assignmentId === "4WHSXEqKZeGQZeP9SvqxePQpBkpS" || assignmentId === "4PCdWdiKNwRw1PmLaFzJmTqRBq4v" || assignmentId === "4JcMwRmGJUXptBYzAfUDkKTtgeUs" || assignmentId === "4ZmB6jqmJjRWPWxjuq22Uf17CuUQ" || assignmentId === "QGPPJyQPhSBJ57QcU8PdMwWwwCR" || assignmentId === "tBLY4YL4LkBwWj9KKq9BevHHvcP" || assignmentId === "4UFHr2rSLyS912riDWih6B8gMXkf"|| assignmentId === "31MsESed1HY5c34gX2dnxD3C7YJF") {
                             if (assignmentId !== "2PbAu1BAT79RxrM5V7c2VAPUQDSd") console.log(`去做【${data.data[0].title}】`)
                             if (data.code === "0" && data.data) {
                                 if (data.data[0]) {
