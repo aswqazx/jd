@@ -59,7 +59,7 @@ if (!jdPandaToken) {
     console.log('请填写Panda获取的Token,变量是PandaToken');
 	return;
 }*/
-jdPandaToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQzOTgyNDk5LCJpYXQiOjE2NTA0MzgzODAsImV4cCI6MTY4MTk3NDM4MH0.XG3NLd-oWGiIRHmXKZEig91mUlKvNafhS4nPLrra5uM'
+jdPandaToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQzOTgyNDk5LCJpYXQiOjE2NTA3NjUzNDAsImV4cCI6MTY4MjMwMTM0MH0.rXta39ZOaHfzIvbdDgVQWtulXPqnNuET5KvqStV42AY'
 
 !(async () => {
   if (!cookiesArr[0]) {
@@ -234,32 +234,34 @@ function index() {
 async function appdoTask(type,taskInfo) {
   let functionId = 'cash_doTask'
   let body = {"type":type,"taskInfo":taskInfo}
-  let sign = await getSignfromPanda(functionId, body)  
-
-  return new Promise((resolve) => {
-    $.post(apptaskUrl(functionId, sign), (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`appdoTask API请求失败，请检查网路重试`)
-        } else {
-          if (safeGet(data)) {
-            data = JSON.parse(data);
-            if(data.code === 0) {
-              console.log(`任务完成成功`)
-              // console.log(data.data.result.taskInfos)
-            } else {
-              console.log(JSON.stringify(data))
+  await $.wait(5000)
+  let sign = await getSignfromPanda(functionId, body)
+  if (sign) {
+    return new Promise((resolve) => {
+      $.post(apptaskUrl(functionId, sign), (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`appdoTask API请求失败，请检查网路重试`)
+          } else {
+            if (safeGet(data)) {
+              data = JSON.parse(data);
+              if(data.code === 0) {
+                console.log(`任务完成成功`)
+                // console.log(data.data.result.taskInfos)
+              } else {
+                console.log(JSON.stringify(data))
+              }
             }
           }
+        } catch (e) {
+          $.logErr(e, resp)
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
+  }
 }
 function doTask(type,taskInfo) {
   return new Promise((resolve) => {
@@ -308,20 +310,22 @@ function getSignfromPanda(functionId, body) {
         }
         $.post(url, async(err, resp, data) => {
             try {
-                data = JSON.parse(data);				
-				
-				if (data && data.code == 200) {
-                    lnrequesttimes = data.request_times;
-                    console.log("连接Panda服务成功，当前Token使用次数为" + lnrequesttimes);
-                    if (data.data.sign)
-                        strsign = data.data.sign || '';
-                    if (strsign != '')
-                        resolve(strsign);
-                    else
-                        console.log("签名获取失败,可能Token使用次数上限或被封.");
+              if (data) {
+                data = JSON.parse(data);
+
+                if (data && data.code == 200) {
+                  lnrequesttimes = data.request_times;
+                  console.log("连接Panda服务成功，当前Token使用次数为" + lnrequesttimes);
+                  if (data.data.sign)
+                    strsign = data.data.sign || '';
+                  if (strsign != '')
+                    resolve(strsign);
+                  else
+                    console.log("签名获取失败,可能Token使用次数上限或被封.");
                 } else {
-                    console.log("签名获取失败.");
+                  console.log("签名获取失败.");
                 }
+              }
 				
             }catch (e) {
                 $.logErr(e, resp);
