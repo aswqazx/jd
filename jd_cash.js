@@ -59,7 +59,7 @@ if (!jdPandaToken) {
     console.log('请填写Panda获取的Token,变量是PandaToken');
 	return;
 }*/
-jdPandaToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQzOTgyNDk5LCJpYXQiOjE2NTA3NjUzNDAsImV4cCI6MTY4MjMwMTM0MH0.rXta39ZOaHfzIvbdDgVQWtulXPqnNuET5KvqStV42AY'
+jdPandaToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjQzOTgyNDk5LCJpYXQiOjE2NTI2NjY0MjgsImV4cCI6MTY4NDIwMjQyOH0.WCrlmFgzuJ8BFBmvfTS45oBmx66fjxpba15YzPobbi4'
 
 !(async () => {
   if (!cookiesArr[0]) {
