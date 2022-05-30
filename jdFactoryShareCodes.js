@@ -17,7 +17,7 @@ let shareCodes = [
   'T0205KkcPHtnnAWzVGiW9aF5CjVWnYaS5kRrbA@' +
   'T0184qQtCEdIqwOKdUPykgCjVWnYaS5kRrbA@' +
   'T0205KkcNVlbrRa0WHuHxrVTCjVWnYaS5kRrbA@' +
-  'T0205KkcIGVYiymqaVKg_JRrCjVWnYaS5kRrbA'
+  'T0225KkcRR8a9AWBKBr3nPELcgCjVWnYaS5kRrbA'
 ]
 
 // 从日志获取互助码

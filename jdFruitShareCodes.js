@@ -17,7 +17,7 @@ let FruitShareCodes = [
   'c2d63f9cde88455b8d3c40d16d845efe@' +
   '4add83825cce493f85d1d26905f036ac@' +
   'a2d651ab25034b7da9403c59aa40f575@' +
-  'c81a68d93f6f44acb61acaabe9bd12bb'
+  'ecfe44b38f0d45dd95c5dca3106a94c5'
 ]
 
 // 从日志获取互助码

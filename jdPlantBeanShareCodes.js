@@ -17,7 +17,7 @@ let PlantBeanShareCodes = [
   'fn5sjpg5zdejnacrfejkkh76kamz4zgnwtytyxa@' +
   'i25bwz3tqgnjqvnbeivx5vrx6vpz4b7c2amh7rq@' +
   'rxggow4kdwppad5wsjr4qrjacnl6tgubvcmwava@' +
-  'wrqpt6mmzjh2ztrnbew4abprtebonmvzum3cvpq'
+  'mlrdw3aw26j3xkwfggaaq6qncq5auneaqvhk44q'
 ]
 
 // 从日志获取互助码
