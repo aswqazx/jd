@@ -579,39 +579,41 @@ async function plantBeanIndex() {
 	llerror=false;
 	llerrorhuobao=false;
     $.plantBeanIndexResult = await request('plantBeanIndex'); //plantBeanIndexBody
-    if ($.plantBeanIndexResult.errorCode === 'PB101') {
+    if ($.plantBeanIndexResult) {
+      if ($.plantBeanIndexResult.errorCode === 'PB101') {
         console.log(`\n活动太火爆了，还是去买买买吧！\n`)
-		llerror=true;
-		llerrorhuobao=true;
+        llerror=true;
+        llerrorhuobao=true;
         return
-    }
-    if ($.plantBeanIndexResult.errorCode) {
+      }
+      if ($.plantBeanIndexResult.errorCode) {
         console.log(`获取任务及基本信息出错，10秒后重试\n`)
         await $.wait(10000);
-        $.plantBeanIndexResult = await request('plantBeanIndex'); 
+        $.plantBeanIndexResult = await request('plantBeanIndex');
         if ($.plantBeanIndexResult.errorCode === 'PB101') {
-            console.log(`\n活动太火爆了，还是去买买买吧！\n`)
-			llerror=true;
-			llerrorhuobao=true;
-            return
+          console.log(`\n活动太火爆了，还是去买买买吧！\n`)
+          llerror=true;
+          llerrorhuobao=true;
+          return
         }
-    }
-    if ($.plantBeanIndexResult.errorCode) {
+      }
+      if ($.plantBeanIndexResult.errorCode) {
         console.log(`获取任务及基本信息出错，30秒后重试\n`)
         await $.wait(30000);
-        $.plantBeanIndexResult = await request('plantBeanIndex'); 
+        $.plantBeanIndexResult = await request('plantBeanIndex');
         if ($.plantBeanIndexResult.errorCode === 'PB101') {
-            console.log(`\n活动太火爆了，还是去买买买吧！\n`)
-			llerror=true;
-			llerrorhuobao=true;
-            return
+          console.log(`\n活动太火爆了，还是去买买买吧！\n`)
+          llerror=true;
+          llerrorhuobao=true;
+          return
         }
-    }
-    if ($.plantBeanIndexResult.errorCode) {
+      }
+      if ($.plantBeanIndexResult.errorCode) {
         console.log(`获取任务及基本信息失败，活动异常，换个时间再试试吧....`)
         console.log("错误代码;" + $.plantBeanIndexResult.errorCode)
-		llerror=true;  
-		return;
+        llerror=true;
+        return;
+      }
     }
 }
 //格式化助力码
