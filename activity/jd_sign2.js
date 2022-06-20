@@ -6,9 +6,9 @@ cron 14 10 * * * https://raw.githubusercontent.com/smiek2121/scripts/master/jd_s
 // const Faker=require('./sign_graphics_validate.js');
 
 const $ = new Env('京东签到图形验证');
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 CryptoScripts()
 $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS;
 let cookiesArr = [], cookie = '';
