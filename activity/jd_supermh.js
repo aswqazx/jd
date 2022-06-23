@@ -11,8 +11,8 @@
 */
 
 const $ = new Env('京东超级盲盒');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
 const linkId = 'Jim-Gu6R_lyd4LT6nz69ow';
 let cookiesArr = [], cookie = '';
