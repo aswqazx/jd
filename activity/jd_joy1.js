@@ -57,7 +57,7 @@ if(process.env.JOY_HOST){
 
 const weAppUrl = 'https://jdjoy.jd.com//pet';
 // const validator = require('./JDJRValidator.js');
-const validator = require('../jd_sign_validate_pure.js');
+const validator = require('./jd_sign_validate_pure.js');
 $.get=validator.injectToRequest($.get.bind($))
 $.post=validator.injectToRequest($.post.bind($))
 !(async () => {

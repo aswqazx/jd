@@ -25,7 +25,7 @@ cron "20 8 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd
  */
 const $ = new Env('闪购盲盒');
 //Node.js用户请在jdCookie.js处填写京东ck;
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 let appId = '1EFRXxg' , homeDataFunPrefix = 'interact_template', collectScoreFunPrefix = 'harmony', message = ''
 let lotteryResultFunPrefix = homeDataFunPrefix, browseTime = 6
 const inviteCodes = [
@@ -44,7 +44,7 @@ const inviteCodes = [
   'T0205KkcIGVYiymqaVKg_JRrCjVQmoaT5kRrbA'
 ];
 const randomCount = $.isNode() ? 20 : 5;
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 let merge = {}
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
