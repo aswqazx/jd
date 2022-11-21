@@ -32,9 +32,9 @@ cron "10 0,6-23 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/mast
  */
 const $ = new Env('东东工厂互助版');
 
-const notify = $.isNode() ? require('./sendNotify') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
 let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭通知推送
 const randomCount = $.isNode() ? 20 : 5;
 //IOS等用户直接用NobyDa的jd cookie
@@ -57,16 +57,16 @@ $.newShareCode = [];
 let NowHour = new Date().getHours();
 let llhelp=true;
 if ($.isNode() && process.env.CC_NOHELPAFTER8) {
-	console.log(NowHour);
-	if (process.env.CC_NOHELPAFTER8=="true"){
-		if (NowHour>8){
-			llhelp=false;
-			console.log(`现在是9点后时段，不启用互助....`);
-		}			
-	}	
+  console.log(NowHour);
+  if (process.env.CC_NOHELPAFTER8=="true"){
+    if (NowHour>8){
+      llhelp=false;
+      console.log(`现在是9点后时段，不启用互助....`);
+    }
+  }
 }
 
-!(async () => {  
+!(async () => {
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
     return;
@@ -94,24 +94,24 @@ if ($.isNode() && process.env.CC_NOHELPAFTER8) {
     }
   }
   if(llhelp){
-	  console.log(`\n开始账号内互助......`);
-	  for (let j = 0; j < cookiesArr.length; j++) {
-		if (cookiesArr[j]) {
-		  cookie = cookiesArr[j];
-		  $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-		  $.index = j + 1; 
-		  console.log(`【京东账号${$.index}】${$.nickName || $.UserName}:\n`);
-		  await helpFriends();
-		}
-	  }
+    console.log(`\n开始账号内互助......`);
+    for (let j = 0; j < cookiesArr.length; j++) {
+      if (cookiesArr[j]) {
+        cookie = cookiesArr[j];
+        $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+        $.index = j + 1;
+        console.log(`【京东账号${$.index}】${$.nickName || $.UserName}:\n`);
+        await helpFriends();
+      }
+    }
   }
 })()
-  .catch((e) => {
-    $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
-  })
-  .finally(() => {
-    $.done();
-  })
+    .catch((e) => {
+      $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+    })
+    .finally(() => {
+      $.done();
+    })
 async function jdFactory() {
   try {
     await jdfactory_getHomeData();
@@ -271,7 +271,7 @@ async function algorithm() {
   })
 }
 async function helpFriends() {
-  $.newShareCode = [...(jdFactoryShareArr || [])]  
+  $.newShareCode = [...(jdFactoryShareArr || [])]
   for (let code of $.newShareCode) {
     if (!code) continue
     const helpRes = await jdfactory_collectScore(code);
@@ -733,7 +733,7 @@ function TotalBean() {
         "Connection": "keep-alive",
         "Cookie": cookie,
         "Referer": "https://wqs.jd.com/my/jingdou/my.shtml?sceneval=2",
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('../USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
       },
       "timeout": 10000,
     }

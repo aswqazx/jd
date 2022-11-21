@@ -56,8 +56,8 @@ if ($.isNode() && process.env.CC_NOHELPAFTER8) {
 		if (NowHour>8){
 			llhelp=false;
 			console.log(`现在是9点后时段，不启用互助....`);
-		}			
-	}	
+		}
+	}
 }
 
 !(async() => {
@@ -94,12 +94,12 @@ if ($.isNode() && process.env.CC_NOHELPAFTER8) {
 		await notify.sendNotify(`${$.name}`, `${allMessage}`)
 	}
 })()
-.catch((e) => {
-	$.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, "");
-})
-.finally(() => {
-	$.done();
-});
+	.catch((e) => {
+		$.log("", `❌ ${$.name}, 失败! 原因: ${e}!`, "");
+	})
+	.finally(() => {
+		$.done();
+	});
 
 async function main() {
 	try {
@@ -165,24 +165,24 @@ function GetShareCode(taskId = 6) {
 				"channelId": 1
 			}),
 			async(err, resp, data) => {
-			try {
-				if (safeGet(data)) {
-					data = $.toObj(data);
+				try {
+					if (safeGet(data)) {
+						data = $.toObj(data);
 
-					if (oc(() => data.data.result.taskVos)) {
-						console.log(`【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${oc(() => data.data.result.taskVos[0].assistTaskDetailVo.taskToken)}\n`);
-						var strSharedcode = `${oc(() => data.data.result.taskVos[0].assistTaskDetailVo.taskToken)}`;
-						$.newShareCodes.push(strSharedcode);
+						if (oc(() => data.data.result.taskVos)) {
+							console.log(`【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${oc(() => data.data.result.taskVos[0].assistTaskDetailVo.taskToken)}\n`);
+							var strSharedcode = `${oc(() => data.data.result.taskVos[0].assistTaskDetailVo.taskToken)}`;
+							$.newShareCodes.push(strSharedcode);
+						}
+
 					}
-
+				} catch (e) {
+					console.log(e)
 				}
-			} catch (e) {
-				console.log(e)
-			}
-			finally {
-				resolve()
-			}
-		})
+				finally {
+					resolve()
+				}
+			})
 	})
 }
 
@@ -194,18 +194,18 @@ function getTaskDetail(taskId = '') {
 				"channelId": 1
 			}),
 			async(err, resp, data) => {
-			try {
-				if (safeGet(data)) {
-					data = $.toObj(data)
+				try {
+					if (safeGet(data)) {
+						data = $.toObj(data)
 						if (taskId === -1) {
 							let tmp = parseInt(parseFloat(nc(oc(() => data.data.result.userScore), '0')))
-								if (!$.earn) {
-									$.score = tmp
-										$.earn = 1
-								} else {
-									$.earn = tmp - $.score
-										$.score = tmp
-								}
+							if (!$.earn) {
+								$.score = tmp
+								$.earn = 1
+							} else {
+								$.earn = tmp - $.score
+								$.score = tmp
+							}
 						} else if (taskId === 6) {
 							if (oc(() => data.data.result.taskVos)) {
 								console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${oc(() => data.data.result.taskVos[0].assistTaskDetailVo.taskToken)}\n`);
@@ -215,8 +215,8 @@ function getTaskDetail(taskId = '') {
 							console.log(`${oc(() => data.data.result.taskVos[0].taskName)}任务，完成次数：${oc(() => data.data.result.taskVos[0].times)}/${oc(() => data.data.result.taskVos[0].maxTimes)}`)
 							if (oc(() => data.data.result.taskVos[0].times) === oc(() => data.data.result.taskVos[0].maxTimes))
 								return
-								await doTask(oc(() => data.data.result.taskVos[0].shoppingActivityVos[0].taskToken), 22, 1) //领取任务
-								await $.wait(1000 * (oc(() => data.data.result.taskVos[0].waitDuration) || 3));
+							await doTask(oc(() => data.data.result.taskVos[0].shoppingActivityVos[0].taskToken), 22, 1) //领取任务
+							await $.wait(1000 * (oc(() => data.data.result.taskVos[0].waitDuration) || 3));
 							await doTask(oc(() => data.data.result.taskVos[0].shoppingActivityVos[0].taskToken), 22, 0); //完成任务
 						} else {
 							for (let vo of nc(oc(() => data.data.result.taskVos.filter(vo => ![19,25,15,21].includes(vo.taskType))) , [])) {
@@ -240,54 +240,54 @@ function getTaskDetail(taskId = '') {
 									} else if (vo.taskType === 1) {
 										for (let key of Object.keys(vo.followShopVo)) {
 											let taskFollow = vo.followShopVo[key]
-												if (taskFollow.status !== 2) {
-													await doTask(taskFollow.taskToken, vo.taskId, 0)
-													break
-												}
+											if (taskFollow.status !== 2) {
+												await doTask(taskFollow.taskToken, vo.taskId, 0)
+												break
+											}
 										}
 									}
 									await $.wait(2000)
 								}
 							}
 						}
+					}
+				} catch (e) {
+					console.log(e)
 				}
-			} catch (e) {
-				console.log(e)
-			}
-			finally {
-				resolve()
-			}
-		})
+				finally {
+					resolve()
+				}
+			})
 	})
 }
 
 async function getCommodities() {
 	return new Promise(async resolve => {
 		const options = taskUrl('jdhealth_getCommodities')
-			$.post(options, async(err, resp, data) => {
-				try {
-					if (safeGet(data)) {
-						data = $.toObj(data)
-							let beans = data.data.result.jBeans.filter(x => x.status !== 0 && x.status !== 1)
-							if (beans.length !== 0) {
-								for (let key of Object.keys(beans)) {
-									let vo = beans[key]
-										if (vo.title === reward && $.score >= vo.exchangePoints) {
-											await $.wait(1000)
-											await exchange(vo.type, vo.id)
-										}
-								}
-							} else {
-								console.log(`兑换京豆次数已达上限`)
+		$.post(options, async(err, resp, data) => {
+			try {
+				if (safeGet(data)) {
+					data = $.toObj(data)
+					let beans = data.data.result.jBeans.filter(x => x.status !== 0 && x.status !== 1)
+					if (beans.length !== 0) {
+						for (let key of Object.keys(beans)) {
+							let vo = beans[key]
+							if (vo.title === reward && $.score >= vo.exchangePoints) {
+								await $.wait(1000)
+								await exchange(vo.type, vo.id)
 							}
+						}
+					} else {
+						console.log(`兑换京豆次数已达上限`)
 					}
-				} catch (e) {
-					console.log(e)
 				}
-				finally {
-					resolve(data)
-				}
-			})
+			} catch (e) {
+				console.log(e)
+			}
+			finally {
+				resolve(data)
+			}
+		})
 	})
 }
 function exchange(commodityType, commodityId) {
@@ -296,81 +296,81 @@ function exchange(commodityType, commodityId) {
 			commodityType,
 			commodityId
 		})
-			$.post(options, (err, resp, data) => {
+		$.post(options, (err, resp, data) => {
+			try {
+				if (safeGet(data)) {
+					data = $.toObj(data)
+					if (data.data.bizCode === 0 || data.data.bizMsg === "success") {
+						$.score = data.data.result.userScore
+						console.log(`兑换${data.data.result.jingBeanNum}京豆成功`)
+						message += `兑换${data.data.result.jingBeanNum}京豆成功\n`
+						if ($.isNode()) {
+							allMessage += `【京东账号${$.index}】 ${$.UserName}\n兑换${data.data.result.jingBeanNum}京豆成功🎉${$.index !== cookiesArr.length ? '\n\n' : ''}`
+						}
+					} else {
+						console.log(data.data.bizMsg)
+					}
+				}
+			} catch (e) {
+				console.log(e)
+			}
+			finally {
+				resolve(data)
+			}
+		})
+	})
+}
+
+function doTask(taskToken, taskId, actionType = 0) {
+	return new Promise(resolve => {
+		const options = taskUrl('jdhealth_collectScore', {taskToken, taskId, actionType})
+		$.get(options,
+			(err, resp, data) => {
 				try {
 					if (safeGet(data)) {
 						data = $.toObj(data)
-							if (data.data.bizCode === 0 || data.data.bizMsg === "success") {
-								$.score = data.data.result.userScore
-									console.log(`兑换${data.data.result.jingBeanNum}京豆成功`)
-									message += `兑换${data.data.result.jingBeanNum}京豆成功\n`
-									if ($.isNode()) {
-										allMessage += `【京东账号${$.index}】 ${$.UserName}\n兑换${data.data.result.jingBeanNum}京豆成功🎉${$.index !== cookiesArr.length ? '\n\n' : ''}`
-									}
-							} else {
-								console.log(data.data.bizMsg)
-							}
+						if ([0, 1].includes(nc(oc(() => data.data.bizCode) , -1))) {
+							$.canDo = true
+							if (oc(() => data.data.result.score))
+								console.log(`任务完成成功，获得：${nc(oc(() => data.data.result.score) , '未知')}能量`)
+							else
+								console.log(`任务领取结果：${nc(oc(() => data.data.bizMsg) , JSON.stringify(data))}`)
+						} else {
+							console.log(`任务完成失败：${nc(oc(() => data.data.bizMsg) , JSON.stringify(data))}`)
+						}
 					}
 				} catch (e) {
 					console.log(e)
-				}
-				finally {
+				} finally {
 					resolve(data)
 				}
 			})
 	})
 }
 
-function doTask(taskToken, taskId, actionType = 0) {
-  return new Promise(resolve => {
-    const options = taskUrl('jdhealth_collectScore', {taskToken, taskId, actionType})
-    $.get(options,
-      (err, resp, data) => {
-        try {
-          if (safeGet(data)) {
-            data = $.toObj(data)
-            if ([0, 1].includes(nc(oc(() => data.data.bizCode) , -1))) {
-              $.canDo = true
-              if (oc(() => data.data.result.score))
-                console.log(`任务完成成功，获得：${nc(oc(() => data.data.result.score) , '未知')}能量`)
-              else
-                console.log(`任务领取结果：${nc(oc(() => data.data.bizMsg) , JSON.stringify(data))}`)
-            } else {
-              console.log(`任务完成失败：${nc(oc(() => data.data.bizMsg) , JSON.stringify(data))}`)
-            }
-          }
-        } catch (e) {
-          console.log(e)
-        } finally {
-          resolve(data)
-        }
-      })
-  })
-}
-
 function collectScore() {
-  return new Promise(resolve => {
-    $.get(taskUrl('jdhealth_collectProduceScore', {}),
-      (err, resp, data) => {
-        try {
-          if (safeGet(data)) {
-            data = $.toObj(data)
-            if (oc(() => data.data.bizCode) === 0) {
-              if (oc(() => data.data.result.produceScore))
-                console.log(`任务完成成功，获得：${nc(oc(() => data.data.result.produceScore) , '未知')}能量`)
-              else
-                console.log(`任务领取结果：${nc(oc(() => data.data.bizMsg) , JSON.stringify(data))}`)
-            } else {
-              console.log(`任务完成失败：${nc(oc(() => data.data.bizMsg) , JSON.stringify(data))}`)
-            }
-          }
-        } catch (e) {
-          console.log(e)
-        } finally {
-          resolve()
-        }
-      })
-  })
+	return new Promise(resolve => {
+		$.get(taskUrl('jdhealth_collectProduceScore', {}),
+			(err, resp, data) => {
+				try {
+					if (safeGet(data)) {
+						data = $.toObj(data)
+						if (oc(() => data.data.bizCode) === 0) {
+							if (oc(() => data.data.result.produceScore))
+								console.log(`任务完成成功，获得：${nc(oc(() => data.data.result.produceScore) , '未知')}能量`)
+							else
+								console.log(`任务领取结果：${nc(oc(() => data.data.bizMsg) , JSON.stringify(data))}`)
+						} else {
+							console.log(`任务完成失败：${nc(oc(() => data.data.bizMsg) , JSON.stringify(data))}`)
+						}
+					}
+				} catch (e) {
+					console.log(e)
+				} finally {
+					resolve()
+				}
+			})
+	})
 }
 
 function taskUrl(function_id, body = {}) {
@@ -438,16 +438,16 @@ function Env(t, e) {
 		}
 		send(t, e = "GET") {
 			t = "string" == typeof t ? {
-				url: t
-			}
-			 : t;
+					url: t
+				}
+				: t;
 			let s = this.get;
 			return "POST" === e && (s = this.post),
-			new Promise((e, i) => {
-				s.call(this, t, (t, s, r) => {
-					t ? i(t) : e(s)
+				new Promise((e, i) => {
+					s.call(this, t, (t, s, r) => {
+						t ? i(t) : e(s)
+					})
 				})
-			})
 		}
 		get(t) {
 			return this.send.call(this.env, t)
@@ -459,16 +459,16 @@ function Env(t, e) {
 	return new class {
 		constructor(t, e) {
 			this.name = t,
-			this.http = new s(this),
-			this.data = null,
-			this.dataFile = "box.dat",
-			this.logs = [],
-			this.isMute = !1,
-			this.isNeedRewrite = !1,
-			this.logSeparator = "\n",
-			this.startTime = (new Date).getTime(),
-			Object.assign(this, e),
-			this.log("", `🔔${this.name}, 开始!`)
+				this.http = new s(this),
+				this.data = null,
+				this.dataFile = "box.dat",
+				this.logs = [],
+				this.isMute = !1,
+				this.isNeedRewrite = !1,
+				this.logSeparator = "\n",
+				this.startTime = (new Date).getTime(),
+				Object.assign(this, e),
+				this.log("", `🔔${this.name}, 开始!`)
 		}
 		isNode() {
 			return "undefined" != typeof module && !!module.exports
@@ -525,20 +525,20 @@ function Env(t, e) {
 				i = i ? i.replace(/\n/g, "").trim() : i;
 				let r = this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");
 				r = r ? 1 * r : 20,
-				r = e && e.timeout ? e.timeout : r;
+					r = e && e.timeout ? e.timeout : r;
 				const[o, h] = i.split("@"),
-				n = {
-					url: `http://${h}/v1/scripting/evaluate`,
-					body: {
-						script_text: t,
-						mock_type: "cron",
-						timeout: r
-					},
-					headers: {
-						"X-Key": o,
-						Accept: "*/*"
-					}
-				};
+					n = {
+						url: `http://${h}/v1/scripting/evaluate`,
+						body: {
+							script_text: t,
+							mock_type: "cron",
+							timeout: r
+						},
+						headers: {
+							"X-Key": o,
+							Accept: "*/*"
+						}
+					};
 				this.post(n, (t, e, i) => s(i))
 			}).catch(t => this.logErr(t))
 		}
@@ -546,11 +546,11 @@ function Env(t, e) {
 			if (!this.isNode())
 				return {}; {
 				this.fs = this.fs ? this.fs : require("fs"),
-				this.path = this.path ? this.path : require("path");
+					this.path = this.path ? this.path : require("path");
 				const t = this.path.resolve(this.dataFile),
-				e = this.path.resolve(process.cwd(), this.dataFile),
-				s = this.fs.existsSync(t),
-				i = !s && this.fs.existsSync(e);
+					e = this.path.resolve(process.cwd(), this.dataFile),
+					s = this.fs.existsSync(t),
+					i = !s && this.fs.existsSync(e);
 				if (!s && !i)
 					return {}; {
 					const i = s ? t : e;
@@ -565,12 +565,12 @@ function Env(t, e) {
 		writedata() {
 			if (this.isNode()) {
 				this.fs = this.fs ? this.fs : require("fs"),
-				this.path = this.path ? this.path : require("path");
+					this.path = this.path ? this.path : require("path");
 				const t = this.path.resolve(this.dataFile),
-				e = this.path.resolve(process.cwd(), this.dataFile),
-				s = this.fs.existsSync(t),
-				i = !s && this.fs.existsSync(e),
-				r = JSON.stringify(this.data);
+					e = this.path.resolve(process.cwd(), this.dataFile),
+					s = this.fs.existsSync(t),
+					i = !s && this.fs.existsSync(e),
+					r = JSON.stringify(this.data);
 				s ? this.fs.writeFileSync(t, r) : i ? this.fs.writeFileSync(e, r) : this.fs.writeFileSync(t, r)
 			}
 		}
@@ -589,7 +589,7 @@ function Env(t, e) {
 			let e = this.getval(t);
 			if (/^@/.test(t)) {
 				const[, s, i] = /^@(.*?)\.(.*?)$/.exec(t),
-				r = s ? this.getval(s) : "";
+					r = s ? this.getval(s) : "";
 				if (r)
 					try {
 						const t = JSON.parse(r);
@@ -604,16 +604,16 @@ function Env(t, e) {
 			let s = !1;
 			if (/^@/.test(e)) {
 				const[, i, r] = /^@(.*?)\.(.*?)$/.exec(e),
-				o = this.getval(i),
-				h = i ? "null" === o ? null : o || "{}" : "{}";
+					o = this.getval(i),
+					h = i ? "null" === o ? null : o || "{}" : "{}";
 				try {
 					const e = JSON.parse(h);
 					this.lodash_set(e, r, t),
-					s = this.setval(JSON.stringify(e), i)
+						s = this.setval(JSON.stringify(e), i)
 				} catch (e) {
 					const o = {};
 					this.lodash_set(o, r, t),
-					s = this.setval(JSON.stringify(o), i)
+						s = this.setval(JSON.stringify(o), i)
 				}
 			} else
 				s = this.setval(t, e);
@@ -627,20 +627,20 @@ function Env(t, e) {
 		}
 		initGotEnv(t) {
 			this.got = this.got ? this.got : require("got"),
-			this.cktough = this.cktough ? this.cktough : require("tough-cookie"),
-			this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar,
+				this.cktough = this.cktough ? this.cktough : require("tough-cookie"),
+				this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar,
 			t && (t.headers = t.headers ? t.headers : {}, void 0 === t.headers.Cookie && void 0 === t.cookieJar && (t.cookieJar = this.ckjar))
 		}
 		get(t, e = (() => {})) {
 			t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]),
-			this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
-						"X-Surge-Skip-Scripting": !1
-					})), $httpClient.get(t, (t, s, i) => {
+				this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
+					"X-Surge-Skip-Scripting": !1
+				})), $httpClient.get(t, (t, s, i) => {
 					!t && s && (s.body = i, s.statusCode = s.status),
-					e(t, s, i)
+						e(t, s, i)
 				})) : this.isQuanX() ? (this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {
-						hints: !1
-					})), $task.fetch(t).then(t => {
+					hints: !1
+				})), $task.fetch(t).then(t => {
 					const {
 						statusCode: s,
 						statusCode: i,
@@ -658,7 +658,7 @@ function Env(t, e) {
 						if (t.headers["set-cookie"]) {
 							const s = t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();
 							s && this.ckjar.setCookieSync(s, null),
-							e.cookieJar = this.ckjar
+								e.cookieJar = this.ckjar
 						}
 					} catch (t) {
 						this.logErr(t)
@@ -687,15 +687,15 @@ function Env(t, e) {
 		post(t, e = (() => {})) {
 			if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon())
 				this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
-						"X-Surge-Skip-Scripting": !1
-					})), $httpClient.post(t, (t, s, i) => {
+					"X-Surge-Skip-Scripting": !1
+				})), $httpClient.post(t, (t, s, i) => {
 					!t && s && (s.body = i, s.statusCode = s.status),
-					e(t, s, i)
+						e(t, s, i)
 				});
 			else if (this.isQuanX())
 				t.method = "POST", this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {
-						hints: !1
-					})), $task.fetch(t).then(t => {
+					hints: !1
+				})), $task.fetch(t).then(t => {
 					const {
 						statusCode: s,
 						statusCode: i,
@@ -759,16 +759,16 @@ function Env(t, e) {
 					return t;
 				if ("string" == typeof t)
 					return this.isLoon() ? t : this.isQuanX() ? {
-						"open-url": t
-					}
-				 : this.isSurge() ? {
-					url: t
-				}
-				 : void 0;
+							"open-url": t
+						}
+						: this.isSurge() ? {
+								url: t
+							}
+							: void 0;
 				if ("object" == typeof t) {
 					if (this.isLoon()) {
 						let e = t.openUrl || t.url || t["open-url"],
-						s = t.mediaUrl || t["media-url"];
+							s = t.mediaUrl || t["media-url"];
 						return {
 							openUrl: e,
 							mediaUrl: s
@@ -776,7 +776,7 @@ function Env(t, e) {
 					}
 					if (this.isQuanX()) {
 						let e = t["open-url"] || t.url || t.openUrl,
-						s = t["media-url"] || t.mediaUrl;
+							s = t["media-url"] || t.mediaUrl;
 						return {
 							"open-url": e,
 							"media-url": s
@@ -795,13 +795,13 @@ function Env(t, e) {
 				t.push(e),
 				s && t.push(s),
 				i && t.push(i),
-				console.log(t.join("\n")),
-				this.logs = this.logs.concat(t)
+					console.log(t.join("\n")),
+					this.logs = this.logs.concat(t)
 			}
 		}
 		log(...t) {
 			t.length > 0 && (this.logs = [...this.logs, ...t]),
-			console.log(t.join(this.logSeparator))
+				console.log(t.join(this.logSeparator))
 		}
 		logErr(t, e) {
 			const s = !this.isSurge() && !this.isQuanX() && !this.isLoon();
@@ -812,9 +812,9 @@ function Env(t, e) {
 		}
 		done(t = {}) {
 			const e = (new Date).getTime(),
-			s = (e - this.startTime) / 1e3;
+				s = (e - this.startTime) / 1e3;
 			this.log("", `🔔${this.name}, 结束! 🕛 ${s} 秒`),
-			this.log(),
+				this.log(),
 			(this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t)
 		}
 	}

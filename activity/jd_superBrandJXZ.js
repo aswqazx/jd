@@ -1,8 +1,8 @@
 /**
- 入口：首页下拉
- 特务集勋章
- 不开卡但尝试领取开卡任务奖励，集齐勋章晚上8点后瓜分，需要开卡才能集齐
- 8 10,18,20 * * * jd_superBrandJXZ.js
+入口：首页下拉
+特务集勋章
+不开卡但尝试领取开卡任务奖励，集齐勋章晚上8点后瓜分，需要开卡才能集齐
+8 10,18,20 * * * jd_superBrandJXZ.js
  */
 const $ = new Env('特务集勋章');
 const notify = $.isNode() ? require('../sendNotify') : '';
@@ -107,9 +107,9 @@ async function doTask() {
                     }
                     console.log(`任务：${$.runInfo.title || $.runInfo.shopName|| $.runInfo.skuName || $.runInfo.itemId},去执行`);
                     if($.oneTask.assignmentType === 5){
-                        await takeRequest('superBrandDoTask', { "source": "badge", "activityId": $.activityId, "encryptProjectId": $.encryptProjectId, "encryptAssignmentId": $.oneTask.encryptAssignmentId, "assignmentType": $.oneTask.assignmentType, "itemId": $.runInfo.itemId, "actionType": 0 ,"dropDownChannel":1});
+                    await takeRequest('superBrandDoTask', { "source": "badge", "activityId": $.activityId, "encryptProjectId": $.encryptProjectId, "encryptAssignmentId": $.oneTask.encryptAssignmentId, "assignmentType": $.oneTask.assignmentType, "itemId": $.runInfo.itemId, "actionType": 0 ,"dropDownChannel":1});
                     }else{
-                        await takeRequest('superBrandDoTask', { "source": "badge", "activityId": $.activityId, "encryptProjectId": $.encryptProjectId, "encryptAssignmentId": $.oneTask.encryptAssignmentId, "assignmentType": $.oneTask.assignmentType, "itemId": $.runInfo.itemId, "actionType": 0 });
+                    await takeRequest('superBrandDoTask', { "source": "badge", "activityId": $.activityId, "encryptProjectId": $.encryptProjectId, "encryptAssignmentId": $.oneTask.encryptAssignmentId, "assignmentType": $.oneTask.assignmentType, "itemId": $.runInfo.itemId, "actionType": 0 });
                     }
                     await $.wait(500);
 
