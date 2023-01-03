@@ -2,9 +2,9 @@
  特务集卡
  脚本没有自动开卡，会尝试领取开卡奖励
  第一个CK黑号会退出
-cron:2 10,18,20 * * *
+cron:45 10,17,19 * * *
 
-2 10,18,20 * * * jd_superBrandJK.js
+45 10,17,19 * * * jd_superBrandJK_1.js
 */
 
 const $ = new Env('特务集卡');
@@ -23,7 +23,7 @@ if ($.isNode()) {
         $.getdata("CookieJD2"),
         ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
-console.log('\n活动地址：首页下拉，需要开卡才能100%集齐，没有开卡的手动开，集齐晚上8点后瓜分\n')
+console.log('\n活动地址：首页下拉，需要开卡才能100%集齐，没有开卡的手动开，集齐晚上8点前瓜分\n')
 let shareList=[];
 $.flag = false
 !(async()=>{
@@ -50,7 +50,7 @@ $.flag = false
 				await main($.cookie);
                 if (_0x44559b == 0 && $.flag) return;
 			}catch(_0x282ca){
-				console.log(JSON.stringify(_0x282ca));
+				console.log(_0x282ca);
 			}
 		}
 	}
@@ -86,9 +86,12 @@ $.flag = false
 				console.log('助力已满');
 				_0x383730.max=true;
 			}else if(_0x224f8e.bizCode==='108'){
-				console.log('助力次数已用完');
+				//console.log('助力次数已用完');
 				_0x4ce29d=false;
-			}
+      } else if (_0x224f8e.bizMsg.indexOf('风控') > -1) {
+                console.log('黑号跳过！');
+                break;
+            }
 			console.log('助力结果：'+_0x224f8e.bizMsg);
 			await $.wait(2000);
 		}
@@ -104,6 +107,9 @@ async function main(_0x14f2ac){
 	if(_0x43a9de.bizCode == 'MP001'){
 		console.log('本期活动结束，等待下期。。。');
         $.flag = true
+        return;
+    } else if (_0x43a9de.bizCode == '2001') {
+        console.log('黑号了！');
 		return;
 	}
 	let _0x215414=_0x43a9de.result.activityBaseInfo;
@@ -146,24 +152,28 @@ async function main(_0x14f2ac){
 		}if(_0x4a424c.completionFlag){
 			console.log('任务：'+_0x4a424c.assignmentName+',已完成');
 			continue;
-		}if(_0x4a424c.assignmentType===1){
-			console.log('任务：'+_0x4a424c.assignmentName+',去执行');
-			let _0x3c7f29=_0x4a424c.ext.shoppingActivity[0].itemId||'';
-			if(!_0x3c7f29){
-				console.log('任务：'+_0x4a424c.assignmentName+',信息异常');
-			}
-			let _0x2d2e7c=await takeRequest(_0x14f2ac,'superBrandDoTask','{"source":"card","activityId":'+_0x23add7+',"encryptProjectId":"'+_0x5add38+'","encryptAssignmentId":"'+_0x4a424c.encryptAssignmentId+'","assignmentType":'+_0x4a424c.assignmentType+',"itemId":"'+_0x3c7f29+'","actionType":0}');
-			console.log('执行结果：'+_0x2d2e7c.bizMsg);
-			await $.wait(3000);
+        } if (_0x4a424c.assignmentType === 1) {
+            for (let i = 0;i<(_0x4a424c.assignmentTimesLimit - _0x4a424c.completionCnt);i++) {
+                console.log('任务：' + _0x4a424c.assignmentName + ',去执行');
+                let _0x3c7f29 = _0x4a424c.ext.shoppingActivity && _0x4a424c.ext.shoppingActivity[i].itemId || _0x4a424c.ext.productsInfo[i].itemId ||'';
+                if (!_0x3c7f29) {
+                    console.log('任务：' + _0x4a424c.assignmentName + ',信息异常');
+                }
+                let _0x2d2e7c = await takeRequest(_0x14f2ac, 'superBrandDoTask', '{"source":"card","activityId":' + _0x23add7 + ',"encryptProjectId":"' + _0x5add38 + '","encryptAssignmentId":"' + _0x4a424c.encryptAssignmentId + '","assignmentType":' + _0x4a424c.assignmentType + ',"itemId":"' + _0x3c7f29 + '","actionType":0}');
+                console.log('执行结果：' + _0x2d2e7c.bizMsg);
+                await $.wait(3000);
+            }
 		}if(_0x4a424c.assignmentType===3){
-			console.log('任务：'+_0x4a424c.assignmentName+',去执行');
-			let _0x440f46=_0x4a424c.ext.followShop[0].itemId||'';
-			if(!_0x440f46){
-				console.log('任务：'+_0x4a424c.assignmentName+',信息异常');
+			for (let i = 0; i < (_0x4a424c.assignmentTimesLimit - _0x4a424c.completionCnt); i++) {
+            console.log('任务：' + _0x4a424c.assignmentName + ',去执行');
+            let _0x440f46 = _0x4a424c.ext.followShop[i].itemId || '';
+            if (!_0x440f46) {
+                console.log('任务：' + _0x4a424c.assignmentName + ',信息异常');
+            }
+            let _0x2d2e7c = await takeRequest(_0x14f2ac, 'superBrandDoTask', '{"source":"card","activityId":' + _0x23add7 + ',"encryptProjectId":"' + _0x5add38 + '","encryptAssignmentId":"' + _0x4a424c.encryptAssignmentId + '","assignmentType":' + _0x4a424c.assignmentType + ',"itemId":"' + _0x440f46 + '","actionType":0}');
+            console.log('执行结果：' + _0x2d2e7c.bizMsg);
+            await $.wait(3000);
 			}
-			let _0x2d2e7c=await takeRequest(_0x14f2ac,'superBrandDoTask','{"source":"card","activityId":'+_0x23add7+',"encryptProjectId":"'+_0x5add38+'","encryptAssignmentId":"'+_0x4a424c.encryptAssignmentId+'","assignmentType":'+_0x4a424c.assignmentType+',"itemId":"'+_0x440f46+'","actionType":0}');
-			console.log('执行结果：'+_0x2d2e7c.bizMsg);
-			await $.wait(3000);
 		}if(_0x4a424c.assignmentType===7){
 			console.log('任务：'+_0x4a424c.assignmentName+',去执行');
 			let _0x25a600=_0x4a424c.ext.brandMemberList[0].itemId||'';
