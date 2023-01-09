@@ -316,7 +316,7 @@ function signRedPackage(body={}) {
         "origin": " https://h5.m.jd.com",
         "referer": "https://h5.m.jd.com/babelDiy/Zeus/49kqxHMcyh6ZgbodooSPvv6Vt5Qv/index.html",
         'Content-Type': 'application/x-www-form-urlencoded',
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('../USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
       },
       body: body,
     }, (_, resp, data) => {
@@ -342,7 +342,7 @@ function followShop(body={}) {
         "origin": " https://h5.m.jd.com",
         "referer": "https://h5.m.jd.com/babelDiy/Zeus/49kqxHMcyh6ZgbodooSPvv6Vt5Qv/index.html",
         'Content-Type': 'application/x-www-form-urlencoded',
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('../USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
       },
       body: body,
     }, (_, resp, data) => {
@@ -368,7 +368,7 @@ function home() {
         "origin": " https://h5.m.jd.com",
         "referer": "https://h5.m.jd.com/babelDiy/Zeus/49kqxHMcyh6ZgbodooSPvv6Vt5Qv/index.html?sid=2856b947a4a73c386c2cd3906bc13a5w&un_area=12_904_905_50601",
         'Content-Type': 'application/x-www-form-urlencoded',
-        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('../USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
       },
       body: 'uuid=1594539339903714422201.432.1647851945670&clientVersion=10.3.2&client=wh5&osVersion=&area=14_924_915_52611&networkType=unknown&functionId=assignmentList&body=%7B%7D&appid=jwsp',
     }, (_, resp, data) => {
@@ -418,8 +418,8 @@ function RedPackageBody1(data,data1){
 
 function requireConfig() {
   return new Promise(resolve => {
-    notify = $.isNode() ? require('./sendNotify') : '';
-    const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+    notify = $.isNode() ? require('../sendNotify') : '';
+    const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
     if ($.isNode()) {
       Object.keys(jdCookieNode).forEach((item) => {
         if (jdCookieNode[item]) {
