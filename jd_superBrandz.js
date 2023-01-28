@@ -48,7 +48,7 @@ if ($.isNode()) {
                 continue
             }
             await getid("superBrandTaskList", "hall_1111")
-						// await doTask1();
+            await doTask1();
         }
     }
 })()
@@ -71,15 +71,15 @@ function getid(functionid, source) {
                     if (data.data && data.code === "0" && data.data.result) {
                         $.result = data.data.result.taskList || []
                         for(const z of $.result){
-													$.actid = '1012465'
-													$.pid = 'JFMx7ke6h6KejTzCXQTfpNi8v1L'
-													$.source = 'hall_1111'
-													$.assignmentName = z.assignmentName
-													$.assignmentType = z.assignmentType
-													$.encryptAssignmentId = z.encryptAssignmentId
-													console.log("去做任务" + $.assignmentName)
-													await doTask();
-												}
+                            $.actid = '1012465'
+                            $.pid = 'JFMx7ke6h6KejTzCXQTfpNi8v1L'
+                            $.source = 'hall_1111'
+                            $.assignmentName = z.assignmentName
+                            $.assignmentType = z.assignmentType
+                            $.encryptAssignmentId = z.encryptAssignmentId
+                            console.log("去做任务" + $.assignmentName)
+                            await doTask();
+                        }
                     } else {
                         console.log("获取失败")
                         $.cando = false
@@ -93,7 +93,7 @@ function getid(functionid, source) {
             }
         });
     });
-}		
+}
 
 function doTask() {
     return new Promise(async (resolve) => {
@@ -106,25 +106,78 @@ function doTask() {
                     console.log(`${$.name} API请求失败，请检查网路重试`);
                 } else {
                     data = JSON.parse(data);
-										// console.log(`${JSON.stringify(data)}`);
+                    // console.log(`${JSON.stringify(data)}`);
                     if (data && data.code === "0") {
                         if (data.data.bizCode === "0") {
-															$.results = data.data.result.rewards || []
-															for(const z of $.results){
-															krtype = z.awardType
-															if(z.awardType == 2) {
-																console.log(`获得：${z.awardName}`)
-															}else if(z.awardType == 3) {
-																console.log(`获得：️${z.beanNum} 豆子`)
-															}else if(z.awardType == 6){
-																console.log(`获得：${z.awardName}`)
-															}else if(z.awardType == 5){
-																console.log(`获得：${z.awardName}`)
-															}else{
-																console.log(`不知道获得了啥`)
-																console.log(data)
-															}
-														}
+                            $.results = data.data.result.rewards || []
+                            for(const z of $.results){
+                                krtype = z.awardType
+                                if(z.awardType == 2) {
+                                    console.log(`获得：${z.awardName}`)
+                                }else if(z.awardType == 3) {
+                                    console.log(`获得：️${z.beanNum} 豆子`)
+                                }else if(z.awardType == 6){
+                                    console.log(`获得：${z.awardName}`)
+                                }else if(z.awardType == 5){
+                                    console.log(`获得：${z.awardName}`)
+                                }else{
+                                    console.log(`不知道获得了啥`)
+                                    console.log(data)
+                                }
+                            }
+                            console.log("任务成功啦~")
+                        } else {
+                            console.log(data.data.bizMsg)
+                        }
+                        resolve(data.data.bizCode)
+                    } else {
+                        console.log(data)
+                    }
+                }
+            } catch (e) {
+                $.logErr(e, resp);
+            } finally {
+                resolve();
+            }
+        });
+    });
+}
+function doTask1() {
+    let opt = {
+        url: `https://api.m.jd.com/api?functionId=superBrandDoTask&appid=ProductZ4Brand&client=wh5&t=1673920844810&body=%7B%22source%22%3A%22hall_1111%22%2C%22activityId%22%3A1012471%2C%22completionFlag%22%3A1%2C%22encryptProjectId%22%3A%223MhsbG1ZeDpqjoEaU2SEw38gdavD%22%2C%22encryptAssignmentId%22%3A%22379wQ992MFewWwiKrkfrNfmtbVwH%22%2C%22assignmentType%22%3A0%2C%22actionType%22%3A0%7D`,
+        headers: {
+            'Origin': 'https://prodev.m.jd.com',
+            'User-Agent': `jdapp;android;9.4.4;10;${$.UUID};network/wifi;ADID/${$.ADID};model/M2006J10C;aid/3b78ecc3f490c7ba;oaid/7d5870c5a1696881;osVer/29;appBuild/85576;psn/3b78ecc3f490c7ba|541;psq/2;uid/3b78ecc3f490c7ba;adk/;ads/;pap/JA2015_311210|9.2.4|ANDROID 10;osv/10;pv/548.2;jdv/0|iosapp|t_335139774|appshare|CopyURL|1606277982178|1606277986;ref/com.jd.lib.personal.view.fragment.JDPersonalFragment;partner/xiaomi001;apprpd/MyJD_Main;Mozilla/5.0 (Linux; Android 10; M2006J10C Build/QP1A.190711.020; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045227 Mobile Safari/537.36`,
+            'Cookie': cookie
+        }
+    }
+    return new Promise(async (resolve) => {
+        $.post(opt, async (err, resp, data) => {
+            try {
+                if (err) {
+                    console.log(`${JSON.stringify(err)}`);
+                    console.log(`${$.name} API请求失败，请检查网路重试`);
+                } else {
+                    data = JSON.parse(data);
+                    // console.log(`${JSON.stringify(data)}`);
+                    if (data && data.code === "0") {
+                        if (data.data.bizCode === "0") {
+                            $.results = data.data.result.rewards || []
+                            for(const z of $.results){
+                                krtype = z.awardType
+                                if(z.awardType == 2) {
+                                    console.log(`获得：${z.awardName}`)
+                                }else if(z.awardType == 3) {
+                                    console.log(`获得：️${z.beanNum} 豆子`)
+                                }else if(z.awardType == 6){
+                                    console.log(`获得：${z.awardName}`)
+                                }else if(z.awardType == 5){
+                                    console.log(`获得：${z.awardName}`)
+                                }else{
+                                    console.log(`不知道获得了啥`)
+                                    console.log(data)
+                                }
+                            }
                             console.log("任务成功啦~")
                         } else {
                             console.log(data.data.bizMsg)
