@@ -6,8 +6,8 @@ cron:15 21 14 1 *
  */
 const $ = new Env('特物Z_超级');
 //Node.js用户请在jdCookie.js处填写京东ck;
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
