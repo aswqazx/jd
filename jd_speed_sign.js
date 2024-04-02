@@ -1,5 +1,5 @@
 /*
-cron "0 6,13,19 * * *" jd_speed_sign_Mod.js, tag:京东特价版任务
+cron "5 3,15 * * *" jd_speed_sign.js, tag:京东特价版任务
 */
 //详细说明参考 https://github.com/ccwav/QLScript2.
 
@@ -84,9 +84,9 @@ async function jdGlobal(cookie,url_uuid) {
 	if (!isLogin)
 		return;
 	
-    await wheelsHome(cookie)
+    //await wheelsHome(cookie)
     await apTaskList(cookie)
-    await wheelsHome(cookie)
+    //await wheelsHome(cookie)
     await taskList(cookie,url_uuid)
     if (llAPIError) {      
       return;
@@ -96,7 +96,7 @@ async function jdGlobal(cookie,url_uuid) {
       return;
     }
     if (runorderReward) {
-      await orderReward(cookie)
+      //await orderReward(cookie)
     }
   } catch (e) {
     $.logErr(e)
