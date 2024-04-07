@@ -93,3 +93,15 @@ API白名单模式 export PERMIT_API='fruit'
 server酱，go-cqhttp，pushdeer，Bark App，tg bot，钉钉bot，企业微信bot，企业微信应用消息，飞书，iGot，push plus，WxPusher，gotify
 
 请在配置管理config文件里填写对应key
+
+## 特别感谢
+
+
+* [@NobyDa](https://github.com/NobyDa)
+* [@chavyleung](https://github.com/chavyleung)
+* [@liuxiaoyucc](https://github.com/liuxiaoyucc)
+* [@Zero-S1](https://github.com/Zero-S1)
+* [@uniqueque](https://github.com/uniqueque)
+* [@nzw9314](https://github.com/nzw9314)
+* [@Andy Woo](https://t.me/update_help_group)
+* [@Oreo](https://github.com/Oreomeow) 
